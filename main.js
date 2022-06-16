@@ -42,15 +42,16 @@ students if they are under 26
 only otherwise it should return false.
 */
 
-let isClassified = function isUserClassifiedForDiscount(person) {
-    if (person.age<=17 || person.age>=67 || (person.isStudent==true && person.age<=26)){
+function isUserClassifiedForDiscount(person) {
+    if (person.age<=17 || person.age>=67 || (person.isStudent && person.age<=26)){
         return true;
-    }return false;
+    }
+    return false;
 }
-console.log(isClassified(studentUser)); // true
-console.log(isClassified(seniorUser)); // true
-console.log(isClassified(kidUser)); // true
-console.log(isClassified(adultUser)); //false
+console.log(isUserClassifiedForDiscount(studentUser)); // true
+console.log(isUserClassifiedForDiscount(seniorUser)); // true
+console.log(isUserClassifiedForDiscount(kidUser)); // true
+console.log(isUserClassifiedForDiscount(adultUser)); //false
 
 /*
 Implement an isItCheaperToUseGroupTicket(arrayOfTravelers) function
@@ -62,10 +63,10 @@ ticket.
  */
 
 function isItCheaperToUseGroupTicket(arrayOfTravelers) {
-    let groupTicketCost = arrayOfTravelers.length * 10;
+    const groupTicketCost = arrayOfTravelers.length * 10;
     let individualTicketsCost = 0;
     for (let i = 0; i <= arrayOfTravelers.length - 1; i++) {
-        if (isClassified(arrayOfTravelers[i])==true) {
+        if (isUserClassifiedForDiscount(arrayOfTravelers[i])) {
             individualTicketsCost += ticketsPricing.discounted;
         } else individualTicketsCost += ticketsPricing.regular;
     }
@@ -87,10 +88,24 @@ vehicles that are a part of public transport system
 	otherwise it should return false. */
 
 function isVehicleAuthorizedToUseBusLine(vehicle){
-    if (vehicle.numberOfWheels==2 || (vehicle.numberOfWheels==4 && (vehicle.isTaxi==true || vehicle.isPartOfPublicTransport==true
-            || vehicle.isSpecialVehicle==true || vehicle.isElectric==true))
-            || (vehicle.numberOfWheels==8 && vehicle.isPartOfPublicTransport)){ return true;
-    } return false;
+    if (vehicle.numberOfWheels === 2) {
+        return true;
+    }
+
+    if (vehicle.numberOfWheels === 4) {
+        return (
+            vehicle.isTaxi ||
+            vehicle.isPartOfPublicTransport ||
+            vehicle.isSpecialVehicle ||
+            vehicle.isElectric
+        );
+    }
+
+    if (vehicle.numberOfWheels === 8) {
+        return vehicle.isPartOfPublicTransport;
+    }
+
+    return false;
 }
 console.log('funkcja trzecia');
 console.log(isVehicleAuthorizedToUseBusLine(regularCar));
